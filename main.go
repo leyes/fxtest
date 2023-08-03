@@ -25,8 +25,8 @@ func (s *Server) Start() {
 
 func main() {
 	fx.New(
-		fx.Provide(config.NewConfig, NewServer),
-		services.Module,
+		fx.Provide(NewServer, config.NewConfig),
+		services.ServicesModule,
 		fx.Invoke(func(svr *Server) {
 			svr.Start()
 		}),

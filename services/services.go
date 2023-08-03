@@ -9,13 +9,17 @@ import (
 
 var SomeService *SomeServiceType
 
+type SomeServiceConfig struct {
+	Config *config.Config
+}
+
 type SomeServiceParams struct {
 	fx.In
-	SomeServiceType
+	SomeServiceConfig
 }
 
 type SomeServiceType struct {
-	Config *config.Config
+	SomeServiceConfig
 }
 
 func (s *SomeServiceType) DoSomething() {
@@ -23,11 +27,9 @@ func (s *SomeServiceType) DoSomething() {
 }
 
 func NewSomeService(params SomeServiceParams) *SomeServiceType {
-	return &SomeServiceType{}
+	return &SomeServiceType{SomeServiceConfig: params.SomeServiceConfig}
 }
 
-var Module = fx.Module("services",
+var ServicesModule = fx.Module("services",
 	fx.Provide(NewSomeService),
-	fx.Invoke(func(params SomeServiceParams) {
-		SomeService = NewSomeService(params)
-	}))
+)
