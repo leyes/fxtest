@@ -23,7 +23,7 @@ type SomeServiceType struct {
 }
 
 func (s *SomeServiceType) DoSomething() {
-	fmt.Println("I am some service doing something with config: ", s.Config)
+	fmt.Printf("I am some service doing something with config: %v\n", s.Config)
 }
 
 func NewSomeService(params SomeServiceParams) *SomeServiceType {
@@ -32,4 +32,7 @@ func NewSomeService(params SomeServiceParams) *SomeServiceType {
 
 var ServicesModule = fx.Module("services",
 	fx.Provide(NewSomeService),
+	fx.Invoke(func() {
+		NewSomeService(SomeServiceParams{})
+	}),
 )
