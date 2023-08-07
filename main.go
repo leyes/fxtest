@@ -24,11 +24,14 @@ func (s *Server) Start() {
 }
 
 func main() {
-	fx.New(
-		fx.Provide(NewServer, config.NewConfig),
+	app := fx.New(
+		fx.Provide(config.NewConfig),
+		fx.Provide(NewServer),
 		services.ServicesModule,
 		fx.Invoke(func(svr *Server) {
 			svr.Start()
 		}),
-	).Run()
+	)
+
+	app.Run()
 }

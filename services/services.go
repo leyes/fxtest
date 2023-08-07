@@ -7,32 +7,17 @@ import (
 	"go.uber.org/fx"
 )
 
-var SomeService *SomeServiceType
-
-type SomeServiceConfig struct {
+type SomeServiceType struct {
+	fx.In
 	Config *config.Config
 }
 
-type SomeServiceParams struct {
-	fx.In
-	SomeServiceConfig
-}
-
-type SomeServiceType struct {
-	SomeServiceConfig
-}
+var SomeService SomeServiceType
 
 func (s *SomeServiceType) DoSomething() {
 	fmt.Printf("I am some service doing something with config: %v\n", s.Config)
 }
 
-func NewSomeService(params SomeServiceParams) *SomeServiceType {
-	return &SomeServiceType{SomeServiceConfig: params.SomeServiceConfig}
-}
-
 var ServicesModule = fx.Module("services",
-	fx.Provide(NewSomeService),
-	fx.Invoke(func() {
-		NewSomeService(SomeServiceParams{})
-	}),
+	fx.Populate(&SomeService),
 )
