@@ -22,7 +22,7 @@ func (s *SomeServiceType) DoSomething() {
 	if s.MaybeValue != nil {
 		maybeValue = *s.MaybeValue
 	}
-	fmt.Printf("I am some service (with MaybeValue %s) doing something with config: %v and dependencies %s\n", maybeValue, s.Config, s.Deps)
+	fmt.Printf("I am some service (with MaybeValue %s) doing something with config: %v and dependencies %v\n", maybeValue, s.Config, s.Deps)
 }
 
 func NewValue() *string {

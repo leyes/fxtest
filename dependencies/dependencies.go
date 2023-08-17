@@ -9,6 +9,7 @@ type Bar string
 type Baz string
 
 type DependenciesType struct {
+	fx.In
 	Foo Foo
 	Bar Bar
 	Baz Baz
@@ -31,8 +32,14 @@ func NewBaz() Baz {
 	return "baz"
 }
 
-var DependenciesModule = fx.Options(
+func NewDependencies(p DependenciesParams) *DependenciesType {
+	d := Construct(p, 
+	return *DependenciesType.(d)
+}
+
+var DependenciesModule = fx.Module("dependencies",
 	fx.Provide(NewFoo),
 	fx.Provide(NewBar),
 	fx.Provide(NewBaz),
+	fx.Populate(&d),
 )
