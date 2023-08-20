@@ -1,45 +1,60 @@
 package dependencies
 
-import "go.uber.org/fx"
+import (
+	"example.com/fxtest/utils"
+	"go.uber.org/fx"
+)
 
-type Foo string
+type Foo *string
 
-type Bar string
+type Bar *string
 
-type Baz string
+type Baz *string
 
-type DependenciesType struct {
-	fx.In
+type DepFields struct {
 	Foo Foo
 	Bar Bar
 	Baz Baz
 }
 
+type DependenciesType struct {
+	DepFields
+}
+
 type DependenciesParams struct {
 	fx.In
-	DependenciesType
+
+	DepFields
 }
 
 func NewFoo() Foo {
-	return "foo"
+	s := "foo"
+	return &s
 }
 
 func NewBar() Bar {
-	return "bar"
+	s := "bar"
+	return &s
 }
 
 func NewBaz() Baz {
-	return "baz"
+	s := "foo"
+	return &s
 }
 
 func NewDependencies(p DependenciesParams) *DependenciesType {
-	d := Construct(p, 
-	return *DependenciesType.(d)
+	retval := utils.Construct[DependenciesParams, DependenciesType](p)
+	return retval
 }
 
 var DependenciesModule = fx.Module("dependencies",
 	fx.Provide(NewFoo),
 	fx.Provide(NewBar),
 	fx.Provide(NewBaz),
-	fx.Populate(&d),
+	// This is so we can reuse the fields from DepFields struct in both parameter object
+	// (DependenciesParams) and return object (DependenciesType).
+	fx.Provide(func() DepFields {
+		return DepFields{}
+	}),
+	fx.Provide(NewDependencies),
 )

@@ -31,7 +31,7 @@ func NewValue() *string {
 }
 
 // Testing conditionals in provide
-var provideNewValue = false
+var provideNewValue = true
 
 var ServicesModule = fx.Module("services",
 	func() fx.Option {

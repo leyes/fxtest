@@ -4,8 +4,6 @@ go 1.20
 
 require go.uber.org/fx v1.20.0
 
-require github.com/jinzhu/copier v0.3.5
-
 require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/dig v1.17.0 // indirect
