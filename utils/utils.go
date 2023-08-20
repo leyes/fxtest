@@ -4,11 +4,11 @@ import "reflect"
 
 func Construct[P any, T any, PT interface{ *T }](params interface{}) PT {
 	p := PT(new(T))
-	Construct0(params, p)
+	construct0(params, p)
 	return p
 }
 
-func Construct0(params interface{}, retval interface{}) {
+func construct0(params interface{}, retval interface{}) {
 	// Check if retval is a pointer
 	rv := reflect.ValueOf(retval)
 	if rv.Kind() != reflect.Ptr {

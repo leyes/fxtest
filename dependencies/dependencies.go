@@ -11,20 +11,17 @@ type Bar *string
 
 type Baz *string
 
-type DepFields struct {
+type DependenciesType struct {
 	Foo Foo
 	Bar Bar
 	Baz Baz
 }
 
-type DependenciesType struct {
-	DepFields
-}
-
 type DependenciesParams struct {
 	fx.In
-
-	DepFields
+	Foo Foo
+	Bar Bar
+	Baz Baz
 }
 
 func NewFoo() Foo {
@@ -42,8 +39,8 @@ func NewBaz() Baz {
 	return &s
 }
 
-func NewDependencies(p DependenciesParams) *DependenciesType {
-	retval := utils.Construct[DependenciesParams, DependenciesType](p)
+func NewDependencies(params DependenciesParams) *DependenciesType {
+	retval := utils.Construct[DependenciesParams, DependenciesType](params)
 	return retval
 }
 
@@ -51,10 +48,6 @@ var DependenciesModule = fx.Module("dependencies",
 	fx.Provide(NewFoo),
 	fx.Provide(NewBar),
 	fx.Provide(NewBaz),
-	// This is so we can reuse the fields from DepFields struct in both parameter object
-	// (DependenciesParams) and return object (DependenciesType).
-	fx.Provide(func() DepFields {
-		return DepFields{}
-	}),
+
 	fx.Provide(NewDependencies),
 )
