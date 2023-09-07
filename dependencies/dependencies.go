@@ -11,6 +11,19 @@ type Bar *string
 
 type Baz *string
 
+// type DependenciesType struct {
+// 	Foo Foo
+// 	Bar Bar
+// 	Baz Baz
+// }
+
+// type DependenciesParams struct {
+// 	fx.In
+// 	Foo Foo
+// 	Bar Bar
+// 	Baz Baz
+// }
+
 type DependenciesType struct {
 	Foo Foo
 	Bar Bar
@@ -19,9 +32,7 @@ type DependenciesType struct {
 
 type DependenciesParams struct {
 	fx.In
-	Foo Foo
-	Bar Bar
-	Baz Baz
+	DependenciesType
 }
 
 func NewFoo() Foo {

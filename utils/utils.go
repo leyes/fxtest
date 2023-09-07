@@ -26,7 +26,14 @@ func construct0(params interface{}, retval interface{}) {
 	// Now, get the value of params
 	rp := reflect.ValueOf(params)
 	if rp.Kind() != reflect.Struct {
-		panic("params is not a struct")
+		if rp.Kind() == reflect.Ptr {
+			rp = rp.Elem()
+			if rp.Kind() != reflect.Struct {
+				panic("params is not a struct or a pointer to a struct")
+			}
+		} else {
+			panic("params is not a struct or a pointer to a struct")
+		}
 	}
 
 	// Iterate over the fields of params and copy to retval
@@ -37,5 +44,4 @@ func construct0(params interface{}, retval interface{}) {
 			rv.FieldByName(name).Set(rp.Field(i))
 		}
 	}
-
 }
